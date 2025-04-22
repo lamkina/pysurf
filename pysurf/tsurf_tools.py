@@ -1,6 +1,5 @@
 from mpi4py import MPI
 import numpy as np
-import uuid
 from scipy.optimize import minimize, broyden1
 from . import cgnsAPI, tecplot_interface, tsurf_component
 
@@ -119,7 +118,7 @@ def getCGNSsections(inputFile, comm=MPI.COMM_WORLD):
         # check if a surface with this name already exists, if so, we append a
         # unique id string to not overwrite the first surface
         if surf in sectionDict.keys():
-            surf += '_' + uuid.uuid4().hex
+            raise ValueError("Duplicate surface name found in CGNS file: " + surf)
 
         # Add this section to the dictionary
         sectionDict[surf] = currSurf

@@ -46,7 +46,7 @@ contains
         integer(kind=intType) :: iSurf, iCurve
         integer(kind=intType) :: nSurfSectionsTot, nCurveSectionsTot
 
-        character(len=32) :: baseName, secName
+        character(len=32) :: baseName, secName, zoneName
 
         print *, '======================'
         print *, cgns_file
@@ -182,6 +182,7 @@ contains
 
             ! Loop over the zones and read the nodes
             zoneLoop2: do iZone = 1, nZones
+                zoneName = zones(iZone)%name
                 do sec = 1, zones(iZone)%nSections
 
                     ! Get number of elements in the current section
@@ -202,8 +203,8 @@ contains
                         surfTriaPtr(iSurf) = iTria
                         surfQuadsPtr(iSurf) = iQuads
 
-                        ! Store surface name
-                        surfNames(iSurf) = secName
+                        ! Store surface name zoneName + "_" + secName
+                        surfNames(iSurf) = trim(zoneName)//"_"//trim(secName)
 
                         ! Loop over the element pointer
                         do i = 2, nElem + 1
